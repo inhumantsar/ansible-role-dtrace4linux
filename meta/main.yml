@@ -1,0 +1,43 @@
+galaxy_info:
+  author: Shaun Martin
+  description: Compiles and installs dtrace4linux
+  company: samsite.ca
+  license: BSD
+
+  min_ansible_version: 2.1
+
+  platforms:
+    - name: Arch
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: CentOS
+      versions:
+        - 6
+        - 7
+    - name: RedHat
+      versions:
+        - 6
+        - 7
+    - name: Debian
+        - all
+    - name: Ubuntu
+      versions:
+        - 14.04
+        - 14.10
+        - 15.04
+        - 15.10
+        - 16.04
+        - 16.10
+        - 17.04
+        - 17.10
+
+  galaxy_tags:
+    - network
+    - dtrace
+    - system
+    - utilities
+
+dependencies: []

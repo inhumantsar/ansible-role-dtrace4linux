@@ -1,0 +1,7 @@
+image: inhumantsar/ansible
+
+test:
+  vars:
+    WORKDIR: /workspace
+  script:
+    /start.sh -vvv

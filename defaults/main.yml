@@ -1,0 +1,57 @@
+---
+# defaults file for dummy-role
+dtrace_version: 20160603
+dtrace_url: "ftp://crispeditor.co.uk/pub/release/website/dtrace/dtrace-{{ dtrace_version }}.tar.bz2"
+dtrace_deps:
+  Red Hat Enterprise Linux: &rhel
+    - binutils-devel
+    - bison
+    - crash
+    - elfutils-devel
+    - elfutils-libelf-devel
+    - flex
+    - gcc
+    - glibc-devel
+    - glibc-devel.i686
+    - kernel-devel
+    - libdwarf
+    - libdwarf-devel
+    - libdwarf-static
+    - libgcc.i686
+    - make
+    - perl
+    - zlib-devel
+  CentOS:
+    <<: *rhel
+  Fedora:
+    <<: *rhel
+  Debian: &debian
+    - binutils-dev
+    - bison
+    - elfutils
+    - flex
+    - libc-dev
+    - libc6-dev
+    - libc6-dev-i386
+    - libdwarf-dev
+    - libelf-dev
+    - libiberty-dev
+    - linux-libc-dev
+    - make
+    - zlib1g-dev
+    - g++-multilib
+  Ubuntu:
+    <<: *debian
+  arch:
+    - bison
+    - flex
+    - gdb
+    - libelf
+    - linux
+    - linux-headers
+    - make
+    - net-tools
+    - openssh
+    - rsync
+    - strace
+    - systemd

@@ -1,0 +1,48 @@
+---
+# tasks file for dtrace4linux
+- name: check for old ubuntus
+  fail:
+    msg: |
+      Only Ubuntu 14.04 and above is supported by this role.
+      More info https://github.com/dtrace4linux/linux/blob/master/tools/get-deps.pl
+  when:
+    - {{ ansible_distribution }} == "Ubuntu"
+    - {{ ansible_distribution_version | version_compare('14.04', '<') }}
+
+- name: check for unsupported architectures
+  fail:
+    msg: |
+      Only x86_64 platforms are supported.
+  when:
+    - {{ ansible_architecture }} == "x86_64"
+
+- name: install dependencies
+  package:
+    name: "{{ item }}"
+  with_items:
+    - "{{ dtrace_deps[ansible_distribution] }}"
+
+- name: install kernel headers for ubuntu/debian hosts
+  shell: 'apt-get install -y linux-headers-$(uname -r)'
+  when:
+    - {{ ansible_distribution }} == "Ubuntu" or {{ ansible_distribution }} == "Debian"
+
+- name: fetch tarball
+  get_url:
+    url: "{{ dtrace_url }}"
+    dest: "/tmp/dtrace-{{ dtrace_version }}.tar.bz2"
+
+- name: unpack tarball
+  unarchive:
+    src: "/tmp/dtrace-{{ dtrace_version }}.tar.bz2"
+    dest: "/tmp/dtrace"
+    remote_src: yes
+
+- name: make all
+  shell: make -C /tmp/dtrace all
+
+- name: make install
+  shell: make -C /tmp/dtrace install
+
+- name: make load
+  shell: make -C /tmp/dtrace load
