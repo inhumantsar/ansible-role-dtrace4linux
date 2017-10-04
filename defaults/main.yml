@@ -1,11 +1,12 @@
 ---
 # defaults file for dummy-role
-dtrace_version: 20160603
+dtrace_version: 20160613
 dtrace_url: "ftp://crispeditor.co.uk/pub/release/website/dtrace/dtrace-{{ dtrace_version }}.tar.bz2"
 dtrace_deps:
-  Red Hat Enterprise Linux: &rhel
+  RedHat: &RHEL
     - binutils-devel
     - bison
+    - bzip2
     - crash
     - elfutils-devel
     - elfutils-libelf-devel
@@ -21,13 +22,12 @@ dtrace_deps:
     - make
     - perl
     - zlib-devel
-  CentOS:
-    <<: *rhel
-  Fedora:
-    <<: *rhel
-  Debian: &debian
+  CentOS: *RHEL
+  Fedora: *RHEL
+  Debian: &DEBIAN
     - binutils-dev
     - bison
+    - bzip2
     - elfutils
     - flex
     - libc-dev
@@ -40,9 +40,8 @@ dtrace_deps:
     - make
     - zlib1g-dev
     - g++-multilib
-  Ubuntu:
-    <<: *debian
-  arch:
+  Ubuntu: *DEBIAN
+  "Arch Linux":
     - bison
     - flex
     - gdb

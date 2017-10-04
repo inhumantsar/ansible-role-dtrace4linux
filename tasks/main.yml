@@ -6,15 +6,14 @@
       Only Ubuntu 14.04 and above is supported by this role.
       More info https://github.com/dtrace4linux/linux/blob/master/tools/get-deps.pl
   when:
-    - {{ ansible_distribution }} == "Ubuntu"
-    - {{ ansible_distribution_version | version_compare('14.04', '<') }}
+    - "ansible_distribution == 'Ubuntu'"
+    - "{{ ansible_distribution_version | version_compare('14.04', '<') }}"
 
 - name: check for unsupported architectures
   fail:
-    msg: |
-      Only x86_64 platforms are supported.
+    msg: "Only x86_64 platforms are supported. Found: {{ ansible_architecture }}"
   when:
-    - {{ ansible_architecture }} == "x86_64"
+    - "ansible_architecture != 'x86_64'"
 
 - name: install dependencies
   package:
@@ -25,24 +24,24 @@
 - name: install kernel headers for ubuntu/debian hosts
   shell: 'apt-get install -y linux-headers-$(uname -r)'
   when:
-    - {{ ansible_distribution }} == "Ubuntu" or {{ ansible_distribution }} == "Debian"
+    - "ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'"
 
-- name: fetch tarball
+- name: "fetch tarball from {{ dtrace_url }}, save to /tmp/dtrace-{{ dtrace_version }}.tar.bz2"
   get_url:
     url: "{{ dtrace_url }}"
     dest: "/tmp/dtrace-{{ dtrace_version }}.tar.bz2"
 
-- name: unpack tarball
+- name: "unpack tarball at /tmp/dtrace-{{ dtrace_version }}.tar.bz2"
   unarchive:
     src: "/tmp/dtrace-{{ dtrace_version }}.tar.bz2"
-    dest: "/tmp/dtrace"
+    dest: "/tmp"
     remote_src: yes
 
 - name: make all
-  shell: make -C /tmp/dtrace all
+  shell: make -C /tmp/dtrace-{{ dtrace_version }} all
 
 - name: make install
-  shell: make -C /tmp/dtrace install
+  shell: make -C /tmp/dtrace-{{ dtrace_version }} install
 
 - name: make load
-  shell: make -C /tmp/dtrace load
+  shell: make -C /tmp/dtrace-{{ dtrace_version }} load
